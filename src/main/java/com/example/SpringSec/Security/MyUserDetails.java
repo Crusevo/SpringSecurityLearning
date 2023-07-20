@@ -1,51 +1,51 @@
 package com.example.SpringSec.Security;
 
-import com.example.SpringSec.Emplo;
+import com.example.SpringSec.Model.Employee;
+import com.example.SpringSec.Model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-
-public class UserDetailSer implements UserDetails {
-
-    private String name;
-
-    private String pass;
-
-    private String role;
+import java.util.Set;
 
 
+public class MyUserDetails implements UserDetails {
 
-    public UserDetailSer (Emplo emplo){
+    @Autowired
+    Employee employee;
 
-        this.name = emplo.getName();
-
-        this.pass = emplo.getPass();
-
-        this.role = emplo.getRole();
-
+    public MyUserDetails(Employee employee){
+        this.employee = employee;
     }
-
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList((new SimpleGrantedAuthority(role)));
+        Set<Role> emploRoles = employee.getEmploRoles();
+
+        List<SimpleGrantedAuthority> simpleGrantedAuthorityList = new ArrayList<>();
+        for(Role role : emploRoles){
+
+            simpleGrantedAuthorityList.add(new SimpleGrantedAuthority(role.getName()));
+
+        }
+
+        return simpleGrantedAuthorityList;
+
     }
 
     @Override
     public String getPassword() {
-        return pass;
+       return employee.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return name;
+        return employee.getEmploName();
     }
 
     @Override

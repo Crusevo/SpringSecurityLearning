@@ -1,5 +1,6 @@
 package com.example.SpringSec;
 
+import com.example.SpringSec.Repository.EmploRepo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
